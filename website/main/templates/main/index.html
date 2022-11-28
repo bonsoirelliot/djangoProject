@@ -1,0 +1,68 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block body %}
+<h1>Главная страница</h1>
+    {% if books %}
+            <table class="table table-hover table-bordered">
+	{% for book in books %}
+		<tr valign="center">
+			<td>
+				<h5>{{ book.id }}. {{ book.name }}</h5>
+			</td>
+
+
+			<td align="right">
+				{% if request.user.is_staff %}
+				<a href="{% url 'update-book' book.id %}" class="btn btn-outline-secondary btn-sm">Редактировать</a>
+
+				<a href="{% url 'delete-book' book.id %}" class="btn btn-outline-danger btn-sm">Удалить</a>
+				{% endif %}
+<!--				<a href="{% url 'cart-add' book.id %} " class="btn btn-outline-warning btn-sm"> Добавить в корзину</a>-->
+				<form method="post" action="{% url 'cart-add' book.id %}">
+					<input type="submit" name="123" value="Добавить в корзину" class="btn btn-outline-warning btn-sm">
+					{% csrf_token %}
+				</form>
+			</td>
+		</tr>
+	{% endfor %}
+</table>
+    {% else %}
+        <h3>Список пуст!</h3>
+    {% endif %}
+	{% if request.user.is_authenticated %}
+	<a href="{% url 'create' %}"><button type="submit" class="btn btn-success">Добавить книгу в список</button></a>
+	{% endif %}
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+
+
+{% if books.has_previous %}
+	<li class="page-item"><a class="page-link" href="?page=1">&laquo Первая</a></li>
+
+	<li class="page-item"><a class="page-link" href="?page={{ books.previous_page_number }}">Прев.</a></li>
+
+{% endif %}
+
+
+{% for i in nums %}
+	<li class="page-item"><a class="page-link" href="?page={{ forloop.counter }}">{{ forloop.counter }}</a></li>
+
+{% endfor %}
+
+
+{% if books.has_next %}
+	<li class="page-item"><a class="page-link" href="?page={{ books.next_page_number }}">След.</a></li>
+
+	<li class="page-item"><a class="page-link" href="?page={{ books.paginator.num_pages }}">Последняя &raquo</a></li>
+
+{% endif %}
+
+ </ul>
+</nav>
+
+{% endblock %}

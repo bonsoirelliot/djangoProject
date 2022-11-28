@@ -1,0 +1,15 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block body %}
+    <h1>Изменение данных пользователя</h1><br>
+        <form action="{% url 'user_page'%}" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+		    <input type="submit" value="Применить" class="btn btn-success">
+        </form>
+        <br/>
+{% endblock %}

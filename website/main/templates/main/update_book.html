@@ -1,0 +1,15 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block body %}
+    <h1>Редактировать книгу</h1><br>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+		    <input type="submit" value="Применить" class="btn btn-success">
+        </form>
+        <br/>
+{% endblock %}
